@@ -1,0 +1,154 @@
+{% extends "layout.html" %} {% block content %}
+
+<div
+  style="
+    background: linear-gradient(180deg, #151821, #0f1116);
+    padding: 28px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  "
+>
+  <h1 style="font-weight: 800; margin-bottom: 6px">{{ group[0] }}</h1>
+  <div
+    style="
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: var(--text-secondary);
+    "
+  >
+    <div class="badge-pill">{{ group[1] }}</div>
+    <div>📍 {{ group[2] }}</div>
+    <div>📅 Depuis {{ group[3] }}</div>
+  </div>
+  <hr style="border-color: rgba(255, 255, 255, 0.04); margin: 12px 0" />
+  <div style="display: flex; gap: 12px; align-items: center">
+    <div style="font-weight: 700">👥 {{ followers }}</div>
+
+    {% if session.get('user_id') %}
+    <a
+      href="/toggle_follow/{{ request.view_args['id_groupe'] }}"
+      class="btn-primary"
+      style="padding: 6px 10px"
+      >{{ '✅ Abonné' if is_following else '➕ Suivre ce groupe' }}</a
+    >
+    {% else %}
+    <a href="/login" class="btn-primary" style="padding: 6px 10px"
+      >Connectez-vous pour suivre</a
+    >
+    {% endif %}
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 300px 1fr; gap: 18px">
+  <div>
+    <div class="card">
+      <div class="card-header">🎸 Membres</div>
+      <div
+        style="display: flex; flex-direction: column; gap: 6px; padding: 12px"
+      >
+        <div
+          style="
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+          "
+        >
+          Membres Actuels
+        </div>
+        {% for m in members %} {% if m[4] >= today %}
+        <div style="padding: 8px 0">
+          <a
+            href="/artist/{{ m[5] }}"
+            style="
+              font-weight: 700;
+              color: var(--text-main);
+              text-decoration: none;
+            "
+            >{{ m[0] }} {{ m[1] }}</a
+          >
+          <div style="color: var(--text-secondary); font-size: 0.9rem">
+            {{ m[2] }}
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+
+        <div
+          style="
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 8px;
+          "
+        >
+          Anciens Membres
+        </div>
+        {% for m in members %} {% if m[4] < today %}
+        <div style="padding: 8px 0">
+          <a
+            href="/artist/{{ m[5] }}"
+            style="color: var(--text-secondary); text-decoration: none"
+            >{{ m[0] }} {{ m[1] }}</a
+          >
+          <div style="color: var(--text-secondary); font-size: 0.9rem">
+            {{ m[2] }} (Jusqu'en {{ m[4].year }})
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin-top: 0; margin-bottom: 12px">💿 Albums</h3>
+    <div class="card-grid">
+      {% for a in albums %}
+      <a href="/album/{{ a[0] }}" class="card">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <img
+            src="{{ album_cover(a[0]) }}"
+            alt="cover"
+            style="
+              width: 50px;
+              height: 50px;
+              border-radius: 6px;
+              object-fit: cover;
+              background: linear-gradient(180deg, #202636, #151821);
+            "
+          />
+          <div>
+            <div style="font-weight: 700">{{ a[1] }}</div>
+            <div style="color: var(--text-secondary)">{{ a[2] }}</div>
+          </div>
+        </div>
+      </a>
+      {% else %}
+      <div class="alert-card">Aucun album enregistré.</div>
+      {% endfor %}
+    </div>
+
+    <h3 style="margin-top: 18px; margin-bottom: 6px">🎵 Liste des Morceaux</h3>
+    <div class="card" style="max-height: 400px; overflow-y: auto">
+      <div
+        style="display: flex; flex-direction: column; gap: 8px; padding: 12px"
+      >
+        {% for t in tracks %}
+        <a href="/track/{{ t[0] }}" class="list-card-item">
+          <div>{{ t[1] }}</div>
+          <div
+            class="badge-pill"
+            style="background-color: rgba(255, 255, 255, 0.06)"
+          >
+            {{ t[2] }}
+          </div>
+        </a>
+        {% else %}
+        <div style="color: var(--text-secondary)">
+          Aucun morceau disponible.
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

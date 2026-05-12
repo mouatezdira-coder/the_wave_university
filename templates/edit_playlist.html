@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="max-width:820px; margin:12px auto">
+    <div class="card">
+        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center">
+            <span style="font-weight:700">Modifier la Playlist</span>
+            <a href="/profile" class="btn-primary btn-sm">Retour</a>
+        </div>
+        <div style="padding:12px">
+            <form method="post" class="mb-3">
+                <div style="margin-bottom:12px">
+                    <label class="form-label">Titre</label>
+                    <input type="text" name="titre" class="form-control" value="{{ playlist[1] }}" required>
+                </div>
+                <div style="margin-bottom:12px">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control">{{ playlist[2] }}</textarea>
+                </div>
+                <div style="margin-bottom:12px">
+                    <label class="form-label">Statut</label>
+                    <select name="statut" class="form-control">
+                        <option value="public" {% if playlist[3] == 'public' %}selected{% endif %}>Publique</option>
+                        <option value="private" {% if playlist[3] == 'private' %}selected{% endif %}>Privée</option>
+                    </select>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center">
+                    <button type="submit" class="btn-primary">💾 Enregistrer les modifications</button>
+                    <a href="/delete_playlist/{{ playlist[0] }}" class="btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette playlist ?');">🗑️ Supprimer la playlist</a>
+                </div>
+            </form>
+
+            <hr>
+
+            <h5>Gestion des pistes</h5>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px">
+                {% for t in tracks %}
+                <div class="list-card-item">
+                    <div>
+                        <strong>{{ loop.index }}. {{ t[1] }}</strong> <div style="color:var(--text-secondary)">- {{ t[2] }}</div>
+                    </div>
+                    <a href="/remove_track/{{ playlist[0] }}/{{ t[0] }}" class="btn-outline-danger" title="Retirer de la playlist">❌</a>
+                </div>
+                {% else %}
+                <div class="alert-card">Cette playlist est vide.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

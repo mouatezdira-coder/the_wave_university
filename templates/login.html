@@ -1,0 +1,33 @@
+{% extends "layout.html" %} {% block content %}
+<div style="max-width: 420px; margin: 36px auto">
+  <div class="card">
+    <div style="padding: 20px">
+      <h3 style="text-align: center; margin-bottom: 18px">Connexion</h3>
+      <form method="post">
+        <div style="margin-bottom: 12px">
+          <label class="form-label">Pseudo</label>
+          <input type="text" name="pseudo" class="form-control" required />
+        </div>
+        <div style="margin-bottom: 12px">
+          <label class="form-label">Mot de passe</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            required
+          />
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 8px">
+          <button type="submit" class="btn-primary">Se connecter</button>
+        </div>
+      </form>
+
+      <div style="text-align: center; margin-top: 14px">
+        <a href="/signup" style="color: var(--text-secondary)"
+          >Créer un compte</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "layout.html" %} {% block content %}
+<div style="text-align: center; margin-bottom: 18px">
+  <h1 style="font-weight: 800">🔮 Découvertes Personnalisées</h1>
+  <p style="color: var(--text-secondary)">
+    Des suggestions basées sur votre historique d'écoute.
+  </p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    🎤 De vos artistes préférés (que vous n'avez pas encore écoutés)
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px">
+    {% for t in by_artist %}
+    <a href="/track/{{ t[0] }}" class="list-card-item">
+      <div>
+        <strong>{{ t[1] }}</strong>
+        <div style="color: var(--text-secondary)">{{ t[2] }}</div>
+      </div>
+      <div
+        class="badge-pill"
+        style="background-color: rgba(255, 255, 255, 0.06)"
+      >
+        Nouveau pour vous
+      </div>
+    </a>
+    {% else %}
+    <div style="color: var(--text-secondary)">
+      Écoutez plus de musique pour voir des suggestions ici !
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div
+  style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+  "
+>
+  <div>
+    <div class="card">
+      <div class="card-header">📂 Playlists recommandées</div>
+      <div
+        style="display: flex; flex-direction: column; gap: 8px; padding: 12px"
+      >
+        {% for p in by_playlist %}
+        <a href="/playlist/{{ p[0] }}" class="list-card-item">
+          <div style="font-weight: 700">{{ p[1] }}</div>
+          <div style="color: var(--accent-primary); font-weight: 700">
+            {{ p[3] }} titres connus
+          </div>
+          <div style="color: var(--text-secondary); font-size: 0.9rem">
+            Créée par {{ p[2] }}
+          </div>
+        </a>
+        {% else %}
+        <div style="color: var(--text-secondary)">
+          Aucune playlist similaire trouvée.
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="card-header">👥 Les auditeurs comme vous aiment...</div>
+      <div
+        style="display: flex; flex-direction: column; gap: 8px; padding: 12px"
+      >
+        {% for g in by_users %}
+        <a href="/group/{{ g[0] }}" class="list-card-item">
+          <div style="font-weight: 700">{{ g[1] }}</div>
+          <div style="color: var(--text-secondary); font-size: 0.9rem">
+            Suivi par {{ g[2] }} auditeurs similaires
+          </div>
+        </a>
+        {% else %}
+        <div style="color: var(--text-secondary)">
+          Pas assez de données utilisateur pour comparer.
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
